@@ -1,42 +1,19 @@
-# sv
+# Nil (Frontend)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The SvelteKit frontend for [Nil](https://github.com/jdeinum/budget_backend), a
+personal finance tracker. Most of the actual detail — what it does,
+screenshots, the data model, running it, testing — lives in the
+[backend README](https://github.com/jdeinum/budget_backend).
 
-## Creating a project
+## Disclaimer
 
-If you're seeing this, you've probably already done this step. Congrats!
+This frontend is almost entirely AI-written and has **not** been reviewed by
+me, with one exception: the Plaid integration (link token creation, token
+exchange, and anything else that touches Plaid credentials or account data),
+which I wrote by hand and reviewed against
+[Plaid's own docs](https://plaid.com/docs/).
 
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-pnpm dlx sv@0.17.0 create --template minimal --types ts --add tailwindcss="plugins:forms" prettier eslint --install pnpm .
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Everything else — UI, data fetching, forms, whatever's rendering your
+numbers — has not had a human review pass. Don't take my word that it's
+safe or correct. If you're going to run this against your own financial
+data, read the code first.
