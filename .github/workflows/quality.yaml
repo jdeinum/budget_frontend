@@ -1,0 +1,41 @@
+name: Code Quality
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: svelte-check
+        run: pnpm check
+
+      # Advisory only — the shadcn-svelte-generated components under
+      # src/lib/components/ui predate this repo's prettier config and haven't
+      # been reformatted. Flip to a hard failure once that backlog is cleared.
+      - name: ESLint + Prettier (advisory)
+        run: pnpm lint || true
