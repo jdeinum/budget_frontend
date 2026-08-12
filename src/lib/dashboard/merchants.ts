@@ -6,6 +6,7 @@ export interface MerchantSummary {
 	category: string | null;
 	transactionCount: number;
 	totalSpent: number;
+	totalIncome: number;
 	lastDate: string | null;
 	tags: TagValue[];
 }
@@ -26,6 +27,7 @@ export function summarizeMerchants(merchants: Merchant[], transactions: Transact
 		.map((m) => {
 			const txs = byMerchantId.get(m.id) ?? [];
 			const totalSpent = txs.filter((t) => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+			const totalIncome = txs.filter((t) => t.amount < 0).reduce((sum, t) => sum - t.amount, 0);
 			const lastDate = txs.reduce<string | null>(
 				(max, t) => (max === null || t.date > max ? t.date : max),
 				null
@@ -36,6 +38,7 @@ export function summarizeMerchants(merchants: Merchant[], transactions: Transact
 				category: txs[0] ? getTag(txs[0].tags, 'category') : null,
 				transactionCount: txs.length,
 				totalSpent: Math.round(totalSpent * 100) / 100,
+				totalIncome: Math.round(totalIncome * 100) / 100,
 				lastDate,
 				tags: m.tags
 			};

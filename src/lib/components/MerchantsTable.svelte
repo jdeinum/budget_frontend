@@ -51,6 +51,13 @@
 			cell: (info: { getValue: () => unknown }) => formatCurrency(info.getValue() as number, 'USD')
 		},
 		{
+			id: 'totalIncome',
+			accessorFn: (row: MerchantSummary) => row.totalIncome,
+			header: 'Total income',
+			sortFn: 'basic' as const,
+			cell: (info: { getValue: () => unknown }) => formatCurrency(info.getValue() as number, 'USD')
+		},
+		{
 			id: 'lastDate',
 			accessorFn: (row: MerchantSummary) => row.lastDate ?? '',
 			header: 'Last activity',
@@ -86,7 +93,10 @@
 
 	function headerClass(columnId: string, canSort: boolean): string {
 		const base =
-			columnId === 'transactionCount' || columnId === 'totalSpent' || columnId === 'actions'
+			columnId === 'transactionCount' ||
+			columnId === 'totalSpent' ||
+			columnId === 'totalIncome' ||
+			columnId === 'actions'
 				? 'px-3 py-2 text-right'
 				: 'px-3 py-2';
 		return canSort ? cn(base, 'cursor-pointer select-none') : base;
@@ -97,6 +107,9 @@
 		if (columnId === 'transactionCount') return 'px-3 py-2 text-right tabular-nums';
 		if (columnId === 'totalSpent') {
 			return 'px-3 py-2 text-right font-medium tabular-nums whitespace-nowrap';
+		}
+		if (columnId === 'totalIncome') {
+			return 'px-3 py-2 text-right font-medium tabular-nums whitespace-nowrap text-emerald-600 dark:text-emerald-400';
 		}
 		if (columnId === 'name') return 'px-3 py-2 font-medium';
 		return 'text-muted-foreground px-3 py-2';
