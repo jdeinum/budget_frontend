@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:22-alpine AS builder
+FROM node:25-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@11 --activate
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN pnpm build
 # Reinstall with --prod into a clean stage rather than pruning devDependencies
 # out of the builder's node_modules — keeps the runtime image from inheriting
 # any build-time-only native modules pulled in transitively.
-FROM node:22-alpine AS runner
+FROM node:25-alpine AS runner
 RUN corepack enable && corepack prepare pnpm@11 --activate
 WORKDIR /app
 
